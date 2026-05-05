@@ -27,8 +27,22 @@ INSERT INTO posts (userId, title, body) VALUES
   (3, 'מחשבות של משה', 'משה חולק את מחשבותיו'),
   (4, 'מחשבות של נעמי', 'נעמי חולק את מחשבותיה');
 
-INSERT INTO comments (postId, userId, name, body) VALUES
-  (1, 2, 'רבקה', 'פוסט מעולה!'),
-  (1, 3, 'משה', 'מסכים לחלוטין'),
-  (2, 2, 'רבקה', 'מאוד מעניין'),
-  (3, 1, 'שלמה', 'כתיבה יפה');
+INSERT INTO albums (userId, title) VALUES
+  (1, 'אלבום של שלמה'),
+  (1, 'תמונות משפחה'),
+  (2, 'אלבום של רבקה'),
+  (3, 'אלבום של משה'),
+  (4, 'אלבום של נעמי');
+
+INSERT INTO photos (albumId, title, url) VALUES
+  (1, 'תמונה 1', 'https://picsum.photos/id/1/200/200'),
+  (1, 'תמונה 2', 'https://picsum.photos/id/2/200/200'),
+  (2, 'תמונה 3', 'https://picsum.photos/id/3/200/200'),
+  (3, 'תמונה 4', 'https://picsum.photos/id/4/200/200'),
+  (4, 'תמונה 5', 'https://picsum.photos/id/5/200/200');
+
+
+  (1, 2, 'רבקה', 'rivka@example.com', 'פוסט מעולה!'),
+  (1, 3, 'משה', 'moshe@example.com', 'מסכים לחלוטין'),
+  (2, 2, 'רבקה', 'rivka@example.com', 'מאוד מעניין'),
+  (3, 1, 'שלמה', 'shlomo@example.com', 'כתיבה יפה');

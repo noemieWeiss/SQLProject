@@ -150,7 +150,7 @@ export const usePosts = (userId) => {
 
   const deletePost = async (postId) => {
     try {
-      await postsApi.delete(postId)
+      await postsApi.delete(postId, userId)
       const updatedPosts = posts.filter(p => p.id !== postId)
       const updatedAllPosts = allPosts.filter(p => p.id !== postId)
       setPosts(updatedPosts)

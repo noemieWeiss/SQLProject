@@ -13,11 +13,11 @@ export const postsApi = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(post)
   }).then(r => r.json()),
-  delete: (id) => fetch(`${API_BASE}/posts/${id}`, { method: 'DELETE' })
+  delete: (id, userId) => fetch(`${API_BASE}/posts/${id}?userId=${userId}`, { method: 'DELETE' })
 }
 
 export const commentsApi = {
-  getByPostId: (postId) => fetch(`${API_BASE}/comments?postId=${postId}`).then(r => r.json()),
+  getByPostId: (postId) => fetch(`${API_BASE}/posts/${postId}/comments`).then(r => r.json()),
   create: (comment) => fetch(`${API_BASE}/comments`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -28,7 +28,7 @@ export const commentsApi = {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(comment)
   }).then(r => r.json()),
-  delete: (id) => fetch(`${API_BASE}/comments/${id}`, { method: 'DELETE' })
+  delete: (id, userId) => fetch(`${API_BASE}/comments/${id}?userId=${userId}`, { method: 'DELETE' })
 }
 
 export const usersApi = {
@@ -49,48 +49,46 @@ export const usersApi = {
   create: (user) => fetch(`${API_BASE}/users`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(user)
+    body: JSON.stringify({ username: user.username, name: user.name, email: user.email, password: user.password })
   }).then(r => r.json())
 }
 export const todosApi = {
-  getByUserId: (userId) => fetch(`${API_BASE}/todos?userId=${userId}`).then(r => r.json()),
+  getByUserId: (userId) => fetch(`${API_BASE}/users/${userId}/todos`).then(r => r.json()),
   create: (todo) => fetch(`${API_BASE}/todos`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(todo)
   }).then(r => r.json()),
   update: (id, updates) => fetch(`${API_BASE}/todos/${id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updates)
   }).then(r => r.json()),
   delete: (id) => fetch(`${API_BASE}/todos/${id}`, { method: 'DELETE' })
 }
 export const albumsApi = {
-  getByUserId: (userId) => fetch(`${API_BASE}/albums?userId=${userId}`).then(r => r.json()),
+  getByUserId: (userId) => fetch(`${API_BASE}/users/${userId}/albums`).then(r => r.json()),
   create: (album) => fetch(`${API_BASE}/albums`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(album)
   }).then(r => r.json()),
   update: (id, updates) => fetch(`${API_BASE}/albums/${id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updates)
   }).then(r => r.json()),
   delete: (id) => fetch(`${API_BASE}/albums/${id}`, { method: 'DELETE' })
 }
 export const photosApi = {
-  getByAlbumId: (albumId, page = 1, limit = 6) => 
-    fetch(`${API_BASE}/photos?albumId=${albumId}`).then(r => r.json()),
-  getAll: () => fetch(`${API_BASE}/photos`).then(r => r.json()),
+  getByAlbumId: (albumId) => fetch(`${API_BASE}/albums/${albumId}/photos`).then(r => r.json()),
   create: (photo) => fetch(`${API_BASE}/photos`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(photo)
   }).then(r => r.json()),
   update: (id, updates) => fetch(`${API_BASE}/photos/${id}`, {
-    method: 'PATCH',
+    method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(updates)
   }).then(r => r.json()),

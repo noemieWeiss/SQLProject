@@ -33,11 +33,10 @@ const Comments = ({
           <div key={comment.id} className="comment">
             <div className="comment-header">
               <strong>{comment.name}</strong>
-              <span className="comment-email">({comment.email})</span>
-              {comment.email === user?.email && (
+              {Number(comment.userId) === Number(user?.id) && (
                 <div className="comment-actions">
                   <button onClick={() => setEditingComment(comment.id)} className="edit-comment-btn">✏️</button>
-                  <button onClick={() => deleteComment(comment.id)} className="delete-comment-btn">🗑️</button>
+                  <button onClick={() => deleteComment(comment.id, user.id)} className="delete-comment-btn">🗑️</button>
                 </div>
               )}
             </div>

@@ -27,6 +27,7 @@ export const useComments = () => {
     try {
       const comment = await commentsApi.create({
         postId,
+        userId: user.id,
         name: user.name,
         email: user.email,
         body: newComment
@@ -38,9 +39,9 @@ export const useComments = () => {
     }
   }
 
-  const deleteComment = async (commentId) => {
+  const deleteComment = async (commentId, userId) => {
     try {
-      await commentsApi.delete(commentId)
+      await commentsApi.delete(commentId, userId)
       setComments(comments.filter(c => c.id !== commentId))
     } catch (error) {
       console.error('Error deleting comment:', error)
