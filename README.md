@@ -20,6 +20,11 @@ project-root/
 # התחבר ל-MySQL והרץ:
 mysql -u root -p < database/schema.sql
 mysql -u root -p < database/seed.sql
+mysql -u root -p < database/schema.sql
+mysql -u root -p < database/seed.sql
+
+"C:\Program Files\MySQL\MySQL Server 9.7\bin\mysql.exe" -u root -p < database/schema.sql
+"C:\Program Files\MySQL\MySQL Server 9.7\bin\mysql.exe" -u root -p < database/seed.sql
 ```
 
 ### 2. הגדרת השרת
