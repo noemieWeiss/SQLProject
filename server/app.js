@@ -7,8 +7,6 @@ import usersRoutes from './routes/usersRoutes.js';
 import todosRoutes from './routes/todosRoutes.js';
 import postsRoutes from './routes/postsRoutes.js';
 import commentsRoutes from './routes/commentsRoutes.js';
-import albumsRoutes from './routes/albumsRoutes.js';
-import photosRoutes from './routes/photosRoutes.js';
 
 const app = express();
 
@@ -21,8 +19,6 @@ app.use('/users', usersRoutes);
 app.use('/todos', todosRoutes);
 app.use('/posts', postsRoutes);
 app.use('/comments', commentsRoutes);
-app.use('/albums', albumsRoutes);
-app.use('/photos', photosRoutes);
 
 app.use(errorHandler);
 

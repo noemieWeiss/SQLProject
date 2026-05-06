@@ -34,7 +34,6 @@ function Layout() {
           <button onClick={() => setShowInfo(!showInfo)}>Info</button>
           <button onClick={() => navigate(`/users/${user.id}/todos`)}>Todos</button>
           <button onClick={() => navigate(`/users/${user.id}/posts`)}>Posts</button>
-          <button onClick={() => navigate(`/users/${user.id}/albums`)}>Albums</button>
           <button onClick={handleLogout} className="logout-btn">Logout</button>
         </nav>
         
