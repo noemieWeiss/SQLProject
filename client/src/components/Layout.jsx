@@ -1,7 +1,6 @@
 import { useState } from 'react'
 import { useNavigate, Outlet, useLocation } from 'react-router-dom'
 import { useUser } from '../contexts/UserContext'
-import usePersistentState from '../hooks/usePersistentState'
 import useLastPath from '../hooks/useLastPath'
 import '../styles/Home.css'
 
@@ -9,7 +8,7 @@ function Layout() {
   const navigate = useNavigate()
   const location = useLocation()
   const { user, logout } = useUser()
-  const [showInfo, setShowInfo] = usePersistentState(user?.id ? `ui:layout:${user.id}:showInfo` : null, false)
+  const [showInfo, setShowInfo] = useState(false)
 
   const isHomePage = location.pathname.includes('/home')
   useLastPath()

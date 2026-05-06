@@ -1,5 +1,5 @@
-import { findUserByUsername } from '../models/userModel.js';
-import { getPasswordByUserId } from '../models/passwordModel.js';
+import { findUserByUsername } from '../models/user.Model.js';
+import { getPasswordByUserId } from '../models/password.Model.js';
 
 export const loginUser = async (username, password) => {
   const user = await findUserByUsername(username);
