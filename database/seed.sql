@@ -4,7 +4,7 @@ INSERT INTO users (username, name, email) VALUES
   ('shlomo', 'שלמה כהן', 'shlomo@example.com'),
   ('rivka', 'רבקה לוי', 'rivka@example.com'),
   ('moshe', 'משה ישראלי', 'moshe@example.com'),
-  ('Noemie', 'נעמי וייס', 'nw3996@gmail.com');
+  ('Noemie', 'Noemie Weiss', 'nw3996@gmail.com');
 
 INSERT INTO passwords (userId, password) VALUES
   (1, 'pass1234'),
