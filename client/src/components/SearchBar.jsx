@@ -6,8 +6,8 @@ const SearchBar = ({ search, setSearch, searchOptions, placeholder }) => (
       className="search-input"
       type="text"
       placeholder={placeholder || 'Search...'}
-      value={search.query}
-      onChange={(e) => setSearch(prev => ({ ...prev, query: e.target.value }))}
+      value={search.term}
+      onChange={(e) => setSearch(prev => ({ ...prev, term: e.target.value }))}
     />
     <select
       className="search-select"

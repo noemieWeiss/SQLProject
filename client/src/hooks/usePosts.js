@@ -6,7 +6,7 @@ import usePersistentState from './usePersistentState'
 export const usePosts = (userId) => {
   const [posts, setPosts] = useState([])
   const [users, setUsers] = useState([])
-  const [search, setSearch] = usePersistentState(userId ? `ui:posts:${userId}:search` : null, { term: '', type: 'title' })
+  const [search, setSearch] = usePersistentState(userId ? `ui:posts:${userId}:search` : null, { term: '', field: 'title' })
   const [postForm, setPostForm] = usePersistentState(userId ? `ui:posts:${userId}:form` : null, { title: '', body: '', show: false, editing: null })
   const [currentPage, setCurrentPage] = usePersistentState(userId ? `ui:posts:${userId}:page` : null, 1)
   const [postsPerPage] = useState(10)
@@ -75,40 +75,11 @@ export const usePosts = (userId) => {
     }
   }
 
-  const searchById = async (id) => {
-    if (!id.trim()) {
-      loadInitialPosts()
-      return
-    }
-    setLoading(true)
-    try {
-      const post = await postsApi.getById(id)
-      setPosts(post ? [post] : [])
-      setHasMore(false)
-    } catch (error) {
-      console.error('Error searching post:', error)
-      setPosts([])
-    } finally {
-      setLoading(false)
-    }
-  }
-
-  const filteredPosts = posts
-    .filter(post => {
-      if (!search.term) return true
-      if (search.type === 'id') {
-        return post.id.toString().includes(search.term)
-      }
-      return post.title.toLowerCase().includes(search.term.toLowerCase())
-    })
-
-  useEffect(() => {
-    if (search.type === 'id' && search.term.trim()) {
-      searchById(search.term)
-    } else if (!search.term) {
-      loadInitialPosts()
-    }
-  }, [search.term, search.type])
+  const filteredPosts = (search.term ? allPosts : posts).filter(post => {
+    if (!search.term) return true
+    if (search.field === 'id') return post.id.toString().includes(search.term)
+    return post.title?.toLowerCase().includes(search.term.toLowerCase()) ?? false
+  })
 
   const getUserInitials = (userId) => {
     if (!userId) return 'U'

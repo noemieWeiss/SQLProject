@@ -5,7 +5,7 @@ import usePersistentState from './usePersistentState'
 
 export const useTodos = (userId) => {
   const [todos, setTodos] = useState([])
-  const [search, setSearch] = usePersistentState(userId ? `ui:todos:${userId}:search` : null, { term: '', by: 'title' })
+  const [search, setSearch] = usePersistentState(userId ? `ui:todos:${userId}:search` : null, { term: '', field: 'title' })
   const [sortBy, setSortBy] = usePersistentState(userId ? `ui:todos:${userId}:sortBy` : null, 'id')
   const [todoForm, setTodoForm] = usePersistentState(userId ? `ui:todos:${userId}:form` : null, { title: '', editing: null })
 
@@ -31,17 +31,17 @@ export const useTodos = (userId) => {
 
   const filteredTodos = todos.filter(todo => {
     if (!search.term) return true
-    switch (search.by) {
+    switch (search.field) {
       case 'id':
         return todo.id.toString().includes(search.term)
       case 'title':
-        return todo.title.toLowerCase().includes(search.term.toLowerCase())
+        return todo.title?.toLowerCase().includes(search.term.toLowerCase()) ?? false
       case 'completed':
         const searchValue = search.term.toLowerCase()
         if (searchValue === 'true' || searchValue === 'completed' || searchValue === 'done') {
-          return todo.completed === true
+          return todo.completed == true
         } else if (searchValue === 'false' || searchValue === 'pending' || searchValue === 'incomplete') {
-          return todo.completed === false
+          return todo.completed == false
         }
         return false
       default:

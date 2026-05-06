@@ -31,13 +31,13 @@ function Posts() {
       <div className="posts-layout">
         <div className="control-panel">
           <div className="search-container">
-            <select value={search.type} onChange={(e) => setSearch(prev => ({ ...prev, type: e.target.value }))}>
+            <select value={search.field} onChange={(e) => setSearch(prev => ({ ...prev, field: e.target.value }))}>
               <option value="title">Search by Title</option>
               <option value="id">Search by ID</option>
             </select>
             <input
               type="text"
-              placeholder={`Search by ${search.type}...`}
+              placeholder={`Search by ${search.field}...`}
               value={search.term}
               onChange={(e) => setSearch(prev => ({ ...prev, term: e.target.value }))}
             />

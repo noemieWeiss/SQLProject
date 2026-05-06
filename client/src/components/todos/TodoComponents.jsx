@@ -45,7 +45,7 @@ export const TodoControls = ({ search, setSearch, sortBy, setSortBy }) => {
           search={search}
           setSearch={setSearch}
           searchOptions={searchOptions}
-          placeholder={search.by === 'completed' ? 'true/false' : 'Search todos...'}
+          placeholder={search.field === 'completed' ? 'true/false' : 'Search todos...'}
         />
       </div>
     </div>
