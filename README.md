@@ -32,8 +32,8 @@ mysql -u root -p < database/seed.sql
 ```bash
 cd server
 npm install
-# ערוך את קובץ .env עם פרטי החיבור למאגר
 npm start
+# ערוך את קובץ .env עם פרטי החיבור למאגר
 ```
 
 השרת ירוץ על http://localhost:3000
