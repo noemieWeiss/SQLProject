@@ -1,4 +1,4 @@
-import * as postsService from '../services/postsService.js';
+import * as postsService from '../services/posts.Service.js';
 
 export const getComments = async (req, res, next) => {
   try {

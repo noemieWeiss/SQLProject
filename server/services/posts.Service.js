@@ -1,5 +1,5 @@
-import * as postModel from '../models/postModel.js';
-import * as commentModel from '../models/commentModel.js';
+import * as postModel from '../models/post.Model.js';
+import * as commentModel from '../models/comment.Model.js';
 
 export const getAllPosts = () => postModel.getAllPosts();
 export const getUserPosts = (userId) => postModel.getPostsByUserId(userId);
