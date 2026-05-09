@@ -33,3 +33,25 @@ export const getPostById = async (id) => {
   const [rows] = await pool.query('SELECT * FROM posts WHERE id = ?', [id]);
   return rows[0];
 };
+
+export const getAllPostsForUser = async (requestingUserId) => {
+  const [rows] = await pool.query(
+    `SELECT * FROM posts
+     WHERE userId NOT IN (
+       SELECT blockedId FROM blocked_users WHERE blockerId = ?
+     )
+     AND id NOT IN (
+       SELECT postId FROM hidden_posts WHERE userId = ?
+     )
+     ORDER BY id`,
+    [requestingUserId, requestingUserId]
+  );
+  return rows;
+};
+
+export const hidePost = async (userId, postId) => {
+  await pool.query(
+    'INSERT IGNORE INTO hidden_posts (userId, postId) VALUES (?, ?)',
+    [userId, postId]
+  );
+};

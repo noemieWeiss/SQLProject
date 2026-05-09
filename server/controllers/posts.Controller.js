@@ -1,9 +1,15 @@
-import * as postsService from '../services/postsService.js';
+import * as postsService from '../services/posts.Service.js';
 import { applyQueryOptions } from '../utils/queryBuilder.js';
 
 export const getPosts = async (req, res, next) => {
   try {
-    let posts = await postsService.getAllPosts();
+    const { requestingUserId } = req.query;
+    let posts;
+    if (requestingUserId) {
+      posts = await postsService.getPostsForUser(requestingUserId);
+    } else {
+      posts = await postsService.getAllPosts();
+    }
     posts = applyQueryOptions(posts, req.query);
     res.json(posts);
   } catch (err) { next(err); }
@@ -39,11 +45,22 @@ export const deletePost = async (req, res, next) => {
   try {
     const post = await postsService.getPostById(req.params.id);
     if (!post) return res.status(404).json({ message: 'Post not found' });
-    const requestingUserId = req.body.userId ?? req.query.userId;
+    const requestingUserId = req.body?.userId ?? req.query.userId;
     if (requestingUserId && Number(post.userId) !== Number(requestingUserId)) {
       return res.status(403).json({ message: 'Forbidden' });
     }
     await postsService.removePost(req.params.id);
     res.status(204).send();
+  } catch (err) { next(err); }
+};
+
+export const softDeletePost = async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) return res.status(400).json({ message: 'userId required' });
+    const post = await postsService.getPostById(req.params.id);
+    if (!post) return res.status(404).json({ message: 'Post not found' });
+    await postsService.softRemovePost(userId, req.params.id);
+    res.status(200).json({ message: 'Post hidden' });
   } catch (err) { next(err); }
 };

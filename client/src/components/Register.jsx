@@ -18,25 +18,35 @@ function Register() {
     const password = formData.get('password')
     const confirmPassword = formData.get('confirmPassword')
 
+    if (password.length <= 8) {
+      alert('Password must be more than 8 characters')
+      return
+    }
+    if (!/[0-9]/.test(password)) {
+      alert('Password must contain at least one number')
+      return
+    }
+    if (!/[A-Z]/.test(password)) {
+      alert('Password must contain at least one uppercase letter')
+      return
+    }
     if (password !== confirmPassword) {
       alert('Passwords do not match')
       return
     }
 
     try {
-      const usernameExists = await usersApi.checkUsername(username)
-      if (usernameExists) {
-        alert('Username already exists')
+      const result = await usersApi.create({ username, name, email, password })
+      if (result?.message === 'Username already exists') {
+        alert('Username already taken')
         return
       }
-
-      const createdUser = await usersApi.create({ username, name, email, password })
-      if (!createdUser?.id) {
-        alert('Registration failed')
+      if (!result?.id) {
+        alert(result?.message || 'Registration failed')
         return
       }
-      login(createdUser)
-      navigate(`/users/${createdUser.id}/home`)
+      login(result)
+      navigate(`/users/${result.id}/home`)
     } catch (error) {
       alert('Server error - please try again')
     }

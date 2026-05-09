@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-Content \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\\\\\\\\u200F\\\\u200F\\\\u200F\\\\u200FSQLProject\\\\server\\\\app.js\" | ForEach-Object { [System.Convert]::ToBase64String\\([System.Text.Encoding]::UTF8.GetBytes\\($_\\)\\) })",
+      "Bash(powershell -Command \"Get-ChildItem -Recurse -Directory | Select-Object -ExpandProperty FullName | head -50\")",
+      "Bash(npm install *)"
+    ]
+  }
+}

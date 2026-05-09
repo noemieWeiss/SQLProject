@@ -1,4 +1,4 @@
-import * as todoModel from '../models/todoModel.js';
+import * as todoModel from '../models/todo.Model.js';
 
 export const getUserTodos = (userId) => todoModel.getTodosByUserId(userId);
 export const addTodo = (data) => todoModel.createTodo(data);

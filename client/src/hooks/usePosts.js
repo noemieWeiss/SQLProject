@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import { postsApi, usersApi } from '../services/api'
 import { useCache } from '../contexts/CacheContext'
 import usePersistentState from './usePersistentState'
@@ -14,26 +14,12 @@ export const usePosts = (userId) => {
   const [loading, setLoading] = useState(false)
   const [allPosts, setAllPosts] = useState([])
 
-  const { get, set } = useCache()
+  const { get, set, invalidate } = useCache()
 
-  useEffect(() => {
-    const cacheKey = `posts:${userId}`
-    const cached = userId ? get(cacheKey) : null
-    if (cached) {
-      setAllPosts(cached)
-      const firstPagePosts = cached.slice(0, postsPerPage)
-      setPosts(firstPagePosts)
-      setHasMore(cached.length > postsPerPage)
-    } else {
-      loadInitialPosts()
-    }
-    usersApi.getAll().then(setUsers).catch(console.error)
-  }, [userId, get, postsPerPage])
-
-  const loadInitialPosts = async () => {
+  const loadInitialPosts = useCallback(async () => {
     setLoading(true)
     try {
-      const allPostsData = await postsApi.getAll(1, 1000)
+      const allPostsData = await postsApi.getAll(1, 1000, userId)
       setAllPosts(allPostsData)
       const firstPagePosts = allPostsData.slice(0, postsPerPage)
       setPosts(firstPagePosts)
@@ -47,19 +33,45 @@ export const usePosts = (userId) => {
     } finally {
       setLoading(false)
     }
-  }
+  }, [userId, postsPerPage, set])
+
+  useEffect(() => {
+    const cacheKey = `posts:${userId}`
+    const cached = userId ? get(cacheKey) : null
+    if (cached) {
+      setAllPosts(cached)
+      const firstPagePosts = cached.slice(0, postsPerPage)
+      setPosts(firstPagePosts)
+      setHasMore(cached.length > postsPerPage)
+    } else {
+      loadInitialPosts()
+    }
+    usersApi.getAll().then(setUsers).catch(console.error)
+  }, [userId, get, postsPerPage, loadInitialPosts])
+
+  // Listen for hard-deletes done in other tabs
+  useEffect(() => {
+    const onStorage = (e) => {
+      if (e.key === 'posts_hard_deleted') {
+        invalidate(`posts:${userId}`)
+        loadInitialPosts()
+      }
+    }
+    window.addEventListener('storage', onStorage)
+    return () => window.removeEventListener('storage', onStorage)
+  }, [userId, invalidate, loadInitialPosts])
 
   const loadMore = async () => {
     if (!hasMore || loading) return
-    
+
     setLoading(true)
-    
+
     try {
       const nextPage = currentPage + 1
       const startIndex = (nextPage - 1) * postsPerPage
       const endIndex = startIndex + postsPerPage
       const nextPagePosts = allPosts.slice(startIndex, endIndex)
-      
+
       if (nextPagePosts.length === 0) {
         alert('No more posts to display')
         setHasMore(false)
@@ -81,15 +93,21 @@ export const usePosts = (userId) => {
     return post.title?.toLowerCase().includes(search.term.toLowerCase()) ?? false
   })
 
-  const getUserInitials = (userId) => {
-    if (!userId) return 'U'
-    const user = users.find(u => u.id == userId)
-    return user?.name ? user.name.substring(0, 2).toUpperCase() : 'U' + userId.toString().substring(0, 1)
+  const getUserInitials = (postUserId) => {
+    if (!postUserId) return 'U'
+    const user = users.find(u => u.id == postUserId)
+    return user?.name ? user.name.substring(0, 2).toUpperCase() : 'U' + postUserId.toString().substring(0, 1)
+  }
+
+  const getUserName = (postUserId) => {
+    if (!postUserId) return 'Unknown'
+    const user = users.find(u => u.id == postUserId)
+    return user?.name || user?.username || `User #${postUserId}`
   }
 
   const savePost = async (userId) => {
     if (!postForm.title.trim() || !postForm.body.trim()) return
-    
+
     try {
       if (postForm.editing) {
         const updated = await postsApi.update(postForm.editing.id, {
@@ -108,7 +126,6 @@ export const usePosts = (userId) => {
         const updatedAllPosts = [newPost, ...allPosts]
         setPosts(updatedPosts)
         setAllPosts(updatedAllPosts)
-        // Update cache
         if (userId) {
           set(`posts:${userId}`, updatedAllPosts)
         }
@@ -126,12 +143,45 @@ export const usePosts = (userId) => {
       const updatedAllPosts = allPosts.filter(p => p.id !== postId)
       setPosts(updatedPosts)
       setAllPosts(updatedAllPosts)
-      // Update cache
+      if (userId) {
+        set(`posts:${userId}`, updatedAllPosts)
+      }
+      localStorage.setItem('posts_hard_deleted', Date.now().toString())
+    } catch (error) {
+      console.error('Error deleting post:', error)
+      alert(`Could not delete post: ${error.message}`)
+    }
+  }
+
+  const softDeletePost = async (postId) => {
+    try {
+      await postsApi.softDelete(postId, userId)
+      const updatedPosts = posts.filter(p => p.id !== postId)
+      const updatedAllPosts = allPosts.filter(p => p.id !== postId)
+      setPosts(updatedPosts)
+      setAllPosts(updatedAllPosts)
       if (userId) {
         set(`posts:${userId}`, updatedAllPosts)
       }
     } catch (error) {
-      console.error('Error deleting post:', error)
+      console.error('Error hiding post:', error)
+      alert(`Could not hide post: ${error.message}`)
+    }
+  }
+
+  const blockUser = async (blockedUserId, password) => {
+    try {
+      await usersApi.blockUser(Number(userId), Number(blockedUserId), password)
+      const updatedPosts = posts.filter(p => Number(p.userId) !== Number(blockedUserId))
+      const updatedAllPosts = allPosts.filter(p => Number(p.userId) !== Number(blockedUserId))
+      setPosts(updatedPosts)
+      setAllPosts(updatedAllPosts)
+      if (userId) {
+        set(`posts:${userId}`, updatedAllPosts)
+      }
+      return { success: true }
+    } catch (error) {
+      return { success: false, message: error.message }
     }
   }
 
@@ -146,8 +196,11 @@ export const usePosts = (userId) => {
     postForm,
     setPostForm,
     getUserInitials,
+    getUserName,
     savePost,
     deletePost,
+    softDeletePost,
+    blockUser,
     editPost,
     loadMore,
     hasMore,

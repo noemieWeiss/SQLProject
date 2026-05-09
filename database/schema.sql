@@ -40,3 +40,19 @@ CREATE TABLE comments (
   FOREIGN KEY (postId) REFERENCES posts(id) ON DELETE CASCADE,
   FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE
 );
+
+CREATE TABLE blocked_users (
+  blockerId INT NOT NULL,
+  blockedId INT NOT NULL,
+  PRIMARY KEY (blockerId, blockedId),
+  FOREIGN KEY (blockerId) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (blockedId) REFERENCES users(id) ON DELETE CASCADE
+);
+
+CREATE TABLE hidden_posts (
+  userId INT NOT NULL,
+  postId INT NOT NULL,
+  PRIMARY KEY (userId, postId),
+  FOREIGN KEY (userId) REFERENCES users(id) ON DELETE CASCADE,
+  FOREIGN KEY (postId) REFERENCES posts(id) ON DELETE CASCADE
+);

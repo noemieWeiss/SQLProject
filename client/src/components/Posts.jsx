@@ -11,9 +11,13 @@ function Posts() {
   const navigate = useNavigate()
   const { userId } = useParams()
   const { user } = useUser()
-  const { posts, search, setSearch, postForm, setPostForm, getUserInitials, savePost, deletePost, editPost, loadMore, hasMore, loading } = usePosts(userId)
+  const {
+    posts, search, setSearch, postForm, setPostForm,
+    getUserInitials, getUserName, savePost, deletePost,
+    softDeletePost, blockUser, editPost, loadMore, hasMore, loading
+  } = usePosts(userId)
   const [selectedPost, setSelectedPost] = usePersistentState(userId ? `ui:posts:${userId}:selectedPost` : null, null)
-  
+
   useLastPath()
   const selectPost = (post) => {
     setSelectedPost(selectedPost?.id === post.id ? null : post)
@@ -59,8 +63,11 @@ function Posts() {
             posts={posts}
             user={user}
             getUserInitials={getUserInitials}
+            getUserName={getUserName}
             onEdit={editPost}
             onDelete={deletePost}
+            onSoftDelete={softDeletePost}
+            onBlock={blockUser}
             selectedPost={selectedPost}
             onSelect={selectPost}
           />

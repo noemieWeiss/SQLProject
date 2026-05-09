@@ -169,3 +169,157 @@
 .comment-header strong {
   color: var(--c-teal);
 }
+
+/* --- POST ACTION BUTTONS --- */
+.post-actions {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  margin-left: auto;
+  flex-wrap: wrap;
+}
+
+.hard-delete-btn {
+  background: #ff4444;
+  color: white;
+  border: 2px solid #cc0000;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 2px 2px 0 #880000;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.hard-delete-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #880000;
+}
+
+.soft-delete-btn {
+  background: #ff9800;
+  color: white;
+  border: 2px solid #e65100;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 2px 2px 0 #bf360c;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.soft-delete-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #bf360c;
+}
+
+.block-btn {
+  background: #6c3483;
+  color: white;
+  border: 2px solid #4a235a;
+  font-size: 0.75rem;
+  padding: 4px 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: 700;
+  box-shadow: 2px 2px 0 #2c0f36;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.block-btn:hover {
+  transform: translate(-1px, -1px);
+  box-shadow: 3px 3px 0 #2c0f36;
+}
+
+/* --- BLOCK MODAL --- */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.modal-box {
+  background: var(--c-white);
+  border: 3px solid var(--c-text);
+  border-radius: var(--radius);
+  box-shadow: 8px 8px 0 var(--c-text);
+  padding: 2rem;
+  max-width: 380px;
+  width: 90%;
+  direction: rtl;
+}
+
+.modal-box h3 {
+  margin: 0 0 0.75rem;
+  font-size: 1.3rem;
+}
+
+.modal-box p {
+  margin: 0 0 0.5rem;
+  line-height: 1.5;
+}
+
+.modal-subtitle {
+  font-size: 0.9rem;
+  color: #555;
+  margin-top: 1rem !important;
+}
+
+.modal-input {
+  width: 100%;
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 2px solid var(--c-text);
+  border-radius: 8px;
+  margin-top: 0.5rem;
+  box-sizing: border-box;
+  direction: ltr;
+}
+
+.modal-input:focus {
+  outline: none;
+  box-shadow: 3px 3px 0 var(--c-text);
+}
+
+.modal-error {
+  color: #cc0000;
+  font-size: 0.85rem;
+  margin-top: 0.4rem !important;
+  font-weight: 600;
+}
+
+.modal-buttons {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.25rem;
+  justify-content: flex-end;
+}
+
+.block-confirm-btn {
+  background: #6c3483;
+  color: white;
+  border: 2px solid #4a235a;
+  padding: 8px 20px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 #2c0f36;
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.block-confirm-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 #2c0f36;
+}
+
+.block-confirm-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

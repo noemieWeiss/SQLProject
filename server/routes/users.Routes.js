@@ -1,13 +1,20 @@
 import { Router } from 'express';
-import { getUsers, getUser, createUser } from '../controllers/usersController.js';
-import { getTodos } from '../controllers/todosController.js';
-import { getUserPosts } from '../controllers/postsController.js';
+import { getUsers, getUser, createUser, blockUser, changePassword } from '../controllers/users.Controller.js';
+import { getTodos } from '../controllers/todos.Controller.js';
+import { getUserPosts } from '../controllers/posts.Controller.js';
+import { authMiddleware } from '../middleware/auth.Middleware.js';
 
 const router = Router();
-router.get('/', getUsers);
+
+// Public
 router.post('/', createUser);
-router.get('/:id', getUser);
-router.get('/:userId/todos', getTodos);
-router.get('/:userId/posts', getUserPosts);
+
+// Protected
+router.get('/', authMiddleware, getUsers);
+router.post('/block', authMiddleware, blockUser);
+router.get('/:id', authMiddleware, getUser);
+router.put('/:id/password', authMiddleware, changePassword);
+router.get('/:userId/todos', authMiddleware, getTodos);
+router.get('/:userId/posts', authMiddleware, getUserPosts);
 
 export default router;

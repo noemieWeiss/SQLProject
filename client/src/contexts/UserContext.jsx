@@ -1,39 +1,33 @@
 import { createContext, useContext, useState, useEffect } from 'react'
-import { usersApi } from '../services/api'
 
 const UserContext = createContext()
+
+const STORAGE_KEY = 'authUser'
 
 export function UserProvider({ children }) {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    const username = localStorage.getItem('username')
-    
-    if (!username) {
-      setLoading(false)
-      return
-    }
-
-    usersApi.getAll().then(users => {
-      const found = users.find(u => u.username === username)
-      if (found) {
-        setUser(found)
-      } else {
-        localStorage.removeItem('username')
+    try {
+      const stored = localStorage.getItem(STORAGE_KEY)
+      if (stored) {
+        setUser(JSON.parse(stored))
       }
-      setLoading(false)
-    })
+    } catch {
+      localStorage.removeItem(STORAGE_KEY)
+    }
+    setLoading(false)
   }, [])
 
   const login = (userData) => {
     setUser(userData)
-    localStorage.setItem('username', userData.username)
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(userData))
   }
 
   const logout = () => {
     setUser(null)
-    localStorage.removeItem('username')
+    localStorage.removeItem(STORAGE_KEY)
   }
 
   return (

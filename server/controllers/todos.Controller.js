@@ -1,4 +1,4 @@
-import * as todosService from '../services/todosService.js';
+import * as todosService from '../services/todos.Service.js';
 
 export const getTodos = async (req, res, next) => {
   try {

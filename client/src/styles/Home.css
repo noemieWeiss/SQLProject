@@ -68,6 +68,86 @@
   flex: 1;
 }
 
+/* Change Password Modal */
+.change-pw-modal {
+  max-width: 420px;
+}
+
+.pw-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-bottom: 1rem;
+}
+
+.pw-field label {
+  font-size: 0.85rem;
+  font-weight: 700;
+  color: var(--c-text);
+}
+
+.pw-field input {
+  padding: 10px 12px;
+  font-size: 1rem;
+  border: 2px solid var(--c-text);
+  border-radius: 8px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.pw-field input:focus {
+  outline: none;
+  box-shadow: 3px 3px 0 var(--c-text);
+}
+
+.pw-error {
+  color: #cc0000;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem;
+}
+
+.pw-buttons {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 0.5rem;
+}
+
+.cancel-pw-btn {
+  background: #f1f1f1;
+  color: var(--c-text);
+  border: 2px solid var(--c-text);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.save-pw-btn {
+  background: var(--c-teal);
+  color: white;
+  border: 2px solid var(--c-text);
+  padding: 8px 18px;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 var(--c-text);
+  transition: transform 0.1s, box-shadow 0.1s;
+}
+
+.save-pw-btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+  box-shadow: 4px 4px 0 var(--c-text);
+}
+
+.save-pw-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
 .welcome-message {
   text-align: center;
   margin-top: 4rem;
