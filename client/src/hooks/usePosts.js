@@ -19,7 +19,7 @@ export const usePosts = (userId) => {
   const loadInitialPosts = useCallback(async () => {
     setLoading(true)
     try {
-      const allPostsData = await postsApi.getAll(1, 1000, userId)
+      const allPostsData = await postsApi.getAll(userId)
       setAllPosts(allPostsData)
       const firstPagePosts = allPostsData.slice(0, postsPerPage)
       setPosts(firstPagePosts)

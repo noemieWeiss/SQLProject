@@ -9,7 +9,14 @@
       "Read(//c/Users/servi/OneDrive/**)",
       "PowerShell($projectPath = \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\\\\\\\\u200F\\\\u200F\\\\u200F\\\\u200FSQLProject\"; Test-Path \"$projectPath\\\\.git\")",
       "Read(//c/Users/servi/OneDrive/������/���� �����/FSWD/��� �/**)",
-      "PowerShell($all = Get-ChildItem \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\" -Recurse -Filter \".git\" -Force -Depth 4; $all | ForEach-Object { Write-Host $_.FullName })"
+      "PowerShell($all = Get-ChildItem \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\" -Recurse -Filter \".git\" -Force -Depth 4; $all | ForEach-Object { Write-Host $_.FullName })",
+      "Bash(Remove-Item \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\\\\\\\\u200F\\\\u200F\\\\u200F\\\\u200FSQLProject\\\\server\\\\utils\\\\queryBuilder.js\")",
+      "PowerShell(Get-ChildItem \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\" -Recurse -Filter \"queryBuilder.js\" | ForEach-Object { Write-Host \"[$\\($_.FullName\\)]\" })",
+      "PowerShell(dir \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\\\\\" -Recurse -Filter \"PostComponents.jsx\" | Where-Object {$_.LastWriteTime -gt \"2026-05-10\"} | Select-Object FullName, LastWriteTime)",
+      "Bash(git -C \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\\\\\\\\u200F\\\\u200F\\\\u200F\\\\u200FSQLProject\" rev-parse --show-toplevel)"
+    ],
+    "additionalDirectories": [
+      "c:\\Users\\servi\\OneDrive\\������\\���� �����\\FSWD\\��� �\\����� �\\������ ����\\????SQLProject\\server\\utils"
     ]
   }
 }

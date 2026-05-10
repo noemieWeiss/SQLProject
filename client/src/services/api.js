@@ -28,9 +28,57 @@ const handleResponse = async (res) => {
   return res
 }
 
+export const usersApi = {
+  
+  getAll: () =>
+    fetch(`${API_BASE}/users`, { headers: authHeader() })
+      .then(handleResponse).then(r => r.json()),
+
+  login: async (username, password) => {
+    const res = await fetch(`${API_BASE}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username, password })
+    })
+    if (!res.ok) return null
+    return res.json()
+  },
+
+  create: (user) =>
+    fetch(`${API_BASE}/users`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user.username, name: user.name, email: user.email, password: user.password })
+    }).then(r => r.json()),
+
+  blockUser: async (blockerId, blockedId, password) => {
+    const res = await fetch(`${API_BASE}/users/block`, {
+      method: 'POST',
+      headers: jsonHeaders(),
+      body: JSON.stringify({ blockerId, blockedId, password })
+    })
+    await handleResponse(res)
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) throw new Error(data.message || 'Block failed')
+    return data
+  },
+
+  changePassword: async (userId, currentPassword, newPassword) => {
+    const res = await fetch(`${API_BASE}/users/${userId}/password`, {
+      method: 'PUT',
+      headers: jsonHeaders(),
+      body: JSON.stringify({ currentPassword, newPassword })
+    })
+    await handleResponse(res)
+    const data = await res.json().catch(() => ({}))
+    if (!res.ok) throw new Error(data.message || 'Password change failed')
+    return data
+  }
+}
+
 export const postsApi = {
-  getAll: (page = 1, limit = 10, requestingUserId = null) => {
-    const params = new URLSearchParams({ _sort: 'id', _order: 'desc', _page: page, _limit: limit })
+  getAll: (requestingUserId = null) => {
+    const params = new URLSearchParams()
     if (requestingUserId) params.append('requestingUserId', requestingUserId)
     return fetch(`${API_BASE}/posts?${params}`, { headers: authHeader() })
       .then(handleResponse).then(r => r.json())
@@ -74,49 +122,6 @@ export const commentsApi = {
   delete: (id, userId) =>
     fetch(`${API_BASE}/comments/${id}?userId=${userId}`, { method: 'DELETE', headers: authHeader() })
       .then(handleResponse)
-}
-
-export const usersApi = {
-  getAll: () =>
-    fetch(`${API_BASE}/users`, { headers: authHeader() })
-      .then(handleResponse).then(r => r.json()),
-  login: async (username, password) => {
-    const res = await fetch(`${API_BASE}/auth/login`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username, password })
-    })
-    if (!res.ok) return null
-    return res.json()
-  },
-  create: (user) =>
-    fetch(`${API_BASE}/users`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ username: user.username, name: user.name, email: user.email, password: user.password })
-    }).then(r => r.json()),
-  blockUser: async (blockerId, blockedId, password) => {
-    const res = await fetch(`${API_BASE}/users/block`, {
-      method: 'POST',
-      headers: jsonHeaders(),
-      body: JSON.stringify({ blockerId, blockedId, password })
-    })
-    await handleResponse(res)
-    const data = await res.json().catch(() => ({}))
-    if (!res.ok) throw new Error(data.message || 'Block failed')
-    return data
-  },
-  changePassword: async (userId, currentPassword, newPassword) => {
-    const res = await fetch(`${API_BASE}/users/${userId}/password`, {
-      method: 'PUT',
-      headers: jsonHeaders(),
-      body: JSON.stringify({ currentPassword, newPassword })
-    })
-    await handleResponse(res)
-    const data = await res.json().catch(() => ({}))
-    if (!res.ok) throw new Error(data.message || 'Password change failed')
-    return data
-  }
 }
 
 export const todosApi = {

@@ -1,16 +1,11 @@
 import * as postsService from '../services/posts.Service.js';
-import { applyQueryOptions } from '../utils/queryBuilder.js';
 
 export const getPosts = async (req, res, next) => {
   try {
     const { requestingUserId } = req.query;
-    let posts;
-    if (requestingUserId) {
-      posts = await postsService.getPostsForUser(requestingUserId);
-    } else {
-      posts = await postsService.getAllPosts();
-    }
-    posts = applyQueryOptions(posts, req.query);
+    const posts = requestingUserId
+      ? await postsService.getPostsForUser(requestingUserId)
+      : await postsService.getAllPosts();
     res.json(posts);
   } catch (err) { next(err); }
 };
