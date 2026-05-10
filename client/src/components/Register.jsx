@@ -45,8 +45,13 @@ function Register() {
         alert(result?.message || 'Registration failed')
         return
       }
-      login(result)
-      navigate(`/users/${result.id}/home`)
+      const fullUser = await usersApi.login(username, password)
+      if (!fullUser) {
+        navigate('/login')
+        return
+      }
+      login(fullUser)
+      navigate(`/users/${fullUser.id}/home`)
     } catch (error) {
       alert('Server error - please try again')
     }

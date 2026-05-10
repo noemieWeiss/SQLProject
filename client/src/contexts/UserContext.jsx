@@ -1,24 +1,19 @@
-import { createContext, useContext, useState, useEffect } from 'react'
+import { createContext, useContext, useState } from 'react'
 
 const UserContext = createContext()
 
 const STORAGE_KEY = 'authUser'
 
 export function UserProvider({ children }) {
-  const [user, setUser] = useState(null)
-  const [loading, setLoading] = useState(true)
-
-  useEffect(() => {
+  const [user, setUser] = useState(() => {
     try {
       const stored = localStorage.getItem(STORAGE_KEY)
-      if (stored) {
-        setUser(JSON.parse(stored))
-      }
+      return stored ? JSON.parse(stored) : null
     } catch {
       localStorage.removeItem(STORAGE_KEY)
+      return null
     }
-    setLoading(false)
-  }, [])
+  })
 
   const login = (userData) => {
     setUser(userData)
@@ -31,7 +26,7 @@ export function UserProvider({ children }) {
   }
 
   return (
-    <UserContext.Provider value={{ user, login, logout, loading }}>
+    <UserContext.Provider value={{ user, login, logout }}>
       {children}
     </UserContext.Provider>
   )

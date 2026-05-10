@@ -115,9 +115,7 @@ function Layout() {
     navigate('/login')
   }
 
-  if (!user) {
-    return <div>Loading...</div>
-  }
+  if (!user) return null
 
   return (
     <div className="home-container">

@@ -3,7 +3,13 @@
     "allow": [
       "PowerShell(Get-Content \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\\\\\\\\u200F\\\\u200F\\\\u200F\\\\u200FSQLProject\\\\server\\\\app.js\" | ForEach-Object { [System.Convert]::ToBase64String\\([System.Text.Encoding]::UTF8.GetBytes\\($_\\)\\) })",
       "Bash(powershell -Command \"Get-ChildItem -Recurse -Directory | Select-Object -ExpandProperty FullName | head -50\")",
-      "Bash(npm install *)"
+      "Bash(npm install *)",
+      "Bash(git merge *)",
+      "Read(//c/Users/servi/OneDrive/������/���� �����/FSWD/��� �/����� �/**)",
+      "Read(//c/Users/servi/OneDrive/**)",
+      "PowerShell($projectPath = \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\\\\\\\\u200F\\\\u200F\\\\u200F\\\\u200FSQLProject\"; Test-Path \"$projectPath\\\\.git\")",
+      "Read(//c/Users/servi/OneDrive/������/���� �����/FSWD/��� �/**)",
+      "PowerShell($all = Get-ChildItem \"c:\\\\Users\\\\servi\\\\OneDrive\\\\מסמכים\\\\מדעי המחשב\\\\FSWD\\\\שנה ב\\\\סמסטר ב\\\\פרויקט מיכל\" -Recurse -Filter \".git\" -Force -Depth 4; $all | ForEach-Object { Write-Host $_.FullName })"
     ]
   }
 }
