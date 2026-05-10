@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useComments } from '../../hooks/useComments'
 import Comments from './Comments'
-import BlockModal from './BlockModal'
+import Block from './Block'
 
 export const PostForm = ({ postForm, setPostForm, onSave, onCancel }) => {
   if (!postForm.show) return null
@@ -49,23 +49,23 @@ export const PostCard = ({
   const isSelected = selectedPost?.id === post.id
   const isOwner = Number(post.userId) === Number(user?.id)
   const [showComments, setShowComments] = useState(false)
-  const [showBlockModal, setShowBlockModal] = useState(false)
+  const [showBlock, setShowBlock] = useState(false)
 
   const handleBlock = async (password) => {
     const result = await onBlock(post.userId, password)
     if (result.success) {
-      setShowBlockModal(false)
+      setShowBlock(false)
     }
     return result
   }
 
   return (
     <>
-      {showBlockModal && (
-        <BlockModal
+      {showBlock && (
+        <Block
           userName={getUserName(post.userId)}
           onConfirm={handleBlock}
-          onCancel={() => setShowBlockModal(false)}
+          onCancel={() => setShowBlock(false)}
         />
       )}
       <div className={`post-card ${isSelected ? 'selected' : ''}`}>
@@ -95,7 +95,7 @@ export const PostCard = ({
               </>
             ) : (
               <button
-                onClick={() => setShowBlockModal(true)}
+                onClick={() => setShowBlock(true)}
                 className="block-btn"
                 title="Block this user"
               >
