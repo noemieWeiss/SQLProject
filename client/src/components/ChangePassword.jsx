@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { usersApi } from '../../services/api'
+import { usersApi } from '../services/api'
 
 const ChangePasswordModal = ({ userId, onClose }) => {
   const [form, setForm] = useState({ current: '', next: '', confirm: '' })
